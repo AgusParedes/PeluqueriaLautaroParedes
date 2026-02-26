@@ -8,20 +8,19 @@ function App() {
   const [turnosBloqueados, setTurnosBloqueados] = useState([]);
 
 
-  const reservarTurno = (hora, dia) => {
-    const fechaFormateada = dia.toLocaleDateString("es-AR", {
-      weekday: "long",
-      day: "numeric",
-      month: "long"
-    });
+  const reservarTurno = (dia, hora, nombre, telefono) => {
+  
+    const idTurno = `${dia}-${hora}`;
 
-    const idTurno = `${fechaFormateada}-${hora}`;
+    const nuevoTurno =  {
+      id : idTurno,
+      hora,
+      dia,
+      nombre, 
+      telefono
+    }
 
-    setTurnosReservados(prev =>
-      prev.includes(idTurno) ? prev : [...prev, idTurno]
-    );
-
-    console.log(`Turno reservado: ${idTurno}`);
+    setTurnosReservados(prev => [...prev, nuevoTurno]);
   };
 
 

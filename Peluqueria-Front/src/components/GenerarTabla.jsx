@@ -60,7 +60,10 @@ function GenerarTabla({
 
               const idTurno = `${fechaFormateada}-${hora}`;
 
-              const estaReservado = turnosReservados.includes(idTurno);
+              const estaReservado = turnosReservados.some(
+                turno => turno.id === idTurno
+              );;
+              
               const estaBloqueado = turnosBloqueados.includes(idTurno);
 
               const deshabilitado = estaReservado || estaBloqueado;
