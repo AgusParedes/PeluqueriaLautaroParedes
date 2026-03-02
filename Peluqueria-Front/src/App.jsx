@@ -49,12 +49,14 @@ function App() {
 
     const idTurno = `${fechaFormateada}-${hora}`;
 
+    console.log(`Intentando desbloquear turno: ${idTurno}`);
+
     setTurnosBloqueados(prev =>
       prev.filter(turno => turno !== idTurno)
     );
 
     setTurnosReservados(prev =>
-      prev.filter(turno => turno !== idTurno)
+      prev.filter(turno => turno.id !== idTurno)
     );
 
     console.log(`Turno desbloqueado: ${idTurno}`);

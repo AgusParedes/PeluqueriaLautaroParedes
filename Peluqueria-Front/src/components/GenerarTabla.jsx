@@ -41,6 +41,8 @@ function GenerarTabla({
     dias.push(fecha);
   }
 
+
+
   return (
     <div style={{ display: "flex", gap: "20px" }}>
       {dias.map((dia, index) => (
@@ -68,6 +70,11 @@ function GenerarTabla({
 
               const deshabilitado = estaReservado || estaBloqueado;
 
+                const turnoEncontrado = turnosReservados.find(
+                  turno => turno.id === idTurno
+                );
+              console.log(turnosReservados);
+
               return (
                 <div key={hora}>
                   <div>{hora}</div>
@@ -84,6 +91,13 @@ function GenerarTabla({
                         ? "Reservar"
                         : "Bloquear"}
                   </button>
+                  {estaReservado && modo === "peluquero" && turnoEncontrado && (
+                    <div>
+                      <div>Reservado por: {turnoEncontrado.nombre}</div>
+                      <div>Teléfono: {turnoEncontrado.telefono}</div>
+                    </div>
+                  )}
+
                   {(estaReservado || estaBloqueado) && modo === "peluquero" && (
                     <button onClick={() => desbloquearTurno(hora, dia)}>
                       Desbloquear
