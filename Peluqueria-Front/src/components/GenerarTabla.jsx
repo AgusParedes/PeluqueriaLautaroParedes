@@ -41,6 +41,8 @@ function GenerarTabla({
     dias.push(fecha);
   }
 
+  
+
 
 
   return (
@@ -65,10 +67,12 @@ function GenerarTabla({
               const estaReservado = turnosReservados.some(
                 turno => turno.id === idTurno
               );;
-              
+
+              const esDomingo = dia.getDay() === 0;
+
               const estaBloqueado = turnosBloqueados.includes(idTurno);
 
-              const deshabilitado = estaReservado || estaBloqueado;
+              const deshabilitado = esDomingo || estaReservado || estaBloqueado;
 
                 const turnoEncontrado = turnosReservados.find(
                   turno => turno.id === idTurno
@@ -81,15 +85,17 @@ function GenerarTabla({
 
                   <button
                     disabled={deshabilitado}
-                    onClick={() => onClickTurno(hora, dia)}
+                    onClick={() => !esDomingo && onClickTurno(hora, dia)}
                   >
-                    {estaBloqueado
-                        ? "Bloqueado"
-                        : estaReservado
-                        ? "Reservado"
-                        : modo === "cliente"
-                        ? "Reservar"
-                        : "Bloquear"}
+                    {esDomingo
+                      ? "Cerrado"
+                      : estaBloqueado
+                      ? "Bloqueado"
+                      : estaReservado
+                      ? "Reservado"
+                      : modo === "cliente"
+                      ? "Reservar"
+                      : "Bloquear"}
                   </button>
                   {estaReservado && modo === "peluquero" && turnoEncontrado && (
                     <div>
@@ -98,11 +104,11 @@ function GenerarTabla({
                     </div>
                   )}
 
-                  {(estaReservado || estaBloqueado) && modo === "peluquero" && (
+                  {!esDomingo && (estaReservado || estaBloqueado) && modo === "peluquero" && (
                     <button onClick={() => desbloquearTurno(hora, dia)}>
                       Desbloquear
                     </button>
-                    )}
+                  )}
                 </div>
               );
             })}
