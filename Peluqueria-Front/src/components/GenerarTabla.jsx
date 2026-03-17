@@ -77,7 +77,6 @@ function GenerarTabla({
                 const turnoEncontrado = turnosReservados.find(
                   turno => turno.id === idTurno
                 );
-              console.log(turnosReservados);
 
               return (
                 <div key={hora}>
