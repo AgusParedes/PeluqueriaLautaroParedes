@@ -1,0 +1,22 @@
+.home__container{
+    height: 100%;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.home__container img{
+    width: 100%;
+    height: auto;
+}
+.home__button{
+    margin-top: 20px;
+    padding: 15px 25px;
+    font-size: 18px;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+}

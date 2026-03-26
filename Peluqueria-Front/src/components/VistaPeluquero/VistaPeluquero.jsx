@@ -1,4 +1,4 @@
-import GenerarTabla from "./GenerarTabla";
+import GenerarTabla from "../GenerarTabla/GenerarTabla";
 function VistaPeluquero({
     turnosReservados,
     turnosBloqueados,

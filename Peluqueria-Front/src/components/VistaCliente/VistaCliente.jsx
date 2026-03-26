@@ -1,6 +1,6 @@
-import GenerarTabla from "./GenerarTabla";
+import GenerarTabla from "../GenerarTabla/GenerarTabla";
 import { useState } from "react";
-import  Formulario  from "./Formulario";
+import  Formulario  from "../Formulario/Formulario";
 
 function VistaCliente({
     turnosReservados,

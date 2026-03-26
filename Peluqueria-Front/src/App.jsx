@@ -1,12 +1,14 @@
 import { useState } from "react";
-import VistaCliente from "./components/VistaCliente.jsx";
-import VistaPeluquero from "./components/VistaPeluquero.jsx";
+import './App.css'
+import VistaCliente from "./components/VistaCliente/VistaCliente.jsx";
+import VistaPeluquero from "./components/VistaPeluquero/VistaPeluquero.jsx";
+import Home from "./components/Home/Home.jsx";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
 
   const [turnosReservados, setTurnosReservados] = useState([]);
   const [turnosBloqueados, setTurnosBloqueados] = useState([]);
-
 
   const reservarTurno = (dia, hora, nombre, telefono) => {
   
@@ -63,22 +65,26 @@ function App() {
   }
 
   return (
-    <div>
-      <h1>Turnos Peluquería</h1>
+       <BrowserRouter>
+           <Routes>
 
-      <VistaCliente
-        turnosReservados={turnosReservados}
-        turnosBloqueados={turnosBloqueados}
-        reservarTurno={reservarTurno}
-      />
+              <Route path='/' element={<Home />} />
 
-      <VistaPeluquero
-        turnosReservados={turnosReservados}
-        turnosBloqueados={turnosBloqueados}
-        bloquearTurno={bloquearTurno}
-        desbloquearTurno={desbloquearTurno} 
-      />
-    </div>
+              <Route path='/BookingPage' element={<VistaCliente
+                  turnosReservados={turnosReservados}
+                  turnosBloqueados={turnosBloqueados}
+                  reservarTurno={reservarTurno}
+                />} />
+
+              <Route path='/SobreNosotros' element={<VistaPeluquero
+                  turnosReservados={turnosReservados}
+                  turnosBloqueados={turnosBloqueados}
+                  bloquearTurno={bloquearTurno}
+                  desbloquearTurno={desbloquearTurno}
+                />} />
+
+           </Routes>
+       </BrowserRouter>
   );
 }
 
