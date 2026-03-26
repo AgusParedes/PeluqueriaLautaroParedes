@@ -2,6 +2,7 @@ import { useState } from "react";
 import VistaCliente from "./components/VistaCliente.jsx";
 import { useEffect } from "react";
 import VistaPeluquero from "./components/VistaPeluquero.jsx";
+import Home from "./components/Home.jsx";
 
 function App() {
 
@@ -96,20 +97,9 @@ function App() {
 
   return (
     <div>
-      <h1>Turnos Peluquería</h1>
 
-      <VistaCliente
-        turnosReservados={turnosReservados}
-        turnosBloqueados={turnosBloqueados}
-        reservarTurno={reservarTurno}
-      />
-
-      <VistaPeluquero
-        turnosReservados={turnosReservados}
-        turnosBloqueados={turnosBloqueados}
-        bloquearTurno={bloquearTurno}
-        desbloquearTurno={desbloquearTurno} 
-      />
+      <Home />
+    
     </div>
   );
 }
