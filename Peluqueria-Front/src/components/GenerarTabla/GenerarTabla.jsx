@@ -1,3 +1,6 @@
+import { useState } from "react";
+import "./GenerarTabla.scss";
+
 function GenerarTabla({
   modo,
   turnosReservados,
@@ -6,9 +9,12 @@ function GenerarTabla({
   desbloquearTurno
 }) {
 
+  const [fechaActual, setFechaActual] = useState(new Date());
+  const [diaSeleccionado, setDiaSeleccionado] = useState(new Date());
+
+  // 📅 Generar horarios
   const GenerarHorarios = () => {
     const horarios = [];
-
     let hora = 9;
     let minutos = 0;
 
@@ -19,101 +25,150 @@ function GenerarTabla({
       horarios.push(`${h}:${m}`);
 
       minutos += 30;
-
       if (minutos === 60) {
         minutos = 0;
         hora++;
       }
     }
 
-    return horarios;
+    return horarios.filter(h => h !== "13:00");
   };
 
   const horarios = GenerarHorarios();
-  const horariosPermitidos = horarios.filter(hora => hora !== "13:00");
 
-  const hoy = new Date();
-  const dias = [];
+  // 📅 Datos del mes
+  const año = fechaActual.getFullYear();
+  const mes = fechaActual.getMonth();
 
-  for (let i = 0; i < 12; i++) {
-    const fecha = new Date();
-    fecha.setDate(hoy.getDate() + i);
-    dias.push(fecha);
+  const ultimoDia = new Date(año, mes + 1, 0).getDate();
+
+  const primerDia = new Date(año, mes, 1).getDay();
+  const primerDiaAjustado = primerDia === 0 ? 6 : primerDia - 1;
+
+  const diasCalendario = [];
+
+  for (let i = 0; i < primerDiaAjustado; i++) {
+    diasCalendario.push(null);
   }
 
-  
+  for (let i = 1; i <= ultimoDia; i++) {
+    diasCalendario.push(new Date(año, mes, i));
+  }
 
-
+  // 📅 Helpers
+  const formatearFecha = (dia) =>
+    dia.toLocaleDateString("es-AR", {
+      weekday: "long",
+      day: "numeric",
+      month: "long"
+    });
 
   return (
-    <div style={{ display: "flex", gap: "20px" }}>
-      {dias.map((dia, index) => (
-        <div key={index}>
-          <div>
-            {dia.toLocaleDateString()}
-          </div>
+    <div style={{ display: "flex", gap: "40px" }}>
 
-          <div>
-            {horariosPermitidos.map((hora) => {
+      {/* 🗓️ CALENDARIO */}
+      <div>
 
-              const fechaFormateada = dia.toLocaleDateString("es-AR", {
-                weekday: "long",
-                day: "numeric",
-                month: "long"
-              });
+        <h2>
+          {fechaActual.toLocaleDateString("es-AR", {
+            month: "long",
+            year: "numeric"
+          })}
+        </h2>
 
-              const idTurno = `${fechaFormateada}-${hora}`;
-
-              const estaReservado = turnosReservados.some(
-                turno => turno.id === idTurno
-              );;
-
-              const esDomingo = dia.getDay() === 0;
-
-              const estaBloqueado = turnosBloqueados.includes(idTurno);
-
-              const deshabilitado = esDomingo || estaReservado || estaBloqueado;
-
-                const turnoEncontrado = turnosReservados.find(
-                  turno => turno.id === idTurno
-                );
-
-              return (
-                <div key={hora}>
-                  <div>{hora}</div>
-
-                  <button
-                    disabled={deshabilitado}
-                    onClick={() => !esDomingo && onClickTurno(hora, dia)}
-                  >
-                    {esDomingo
-                      ? "Cerrado"
-                      : estaBloqueado
-                      ? "Bloqueado"
-                      : estaReservado
-                      ? "Reservado"
-                      : modo === "cliente"
-                      ? "Reservar"
-                      : "Bloquear"}
-                  </button>
-                  {estaReservado && modo === "peluquero" && turnoEncontrado && (
-                    <div>
-                      <div>Reservado por: {turnoEncontrado.nombre}</div>
-                      <div>Teléfono: {turnoEncontrado.telefono}</div>
-                    </div>
-                  )}
-
-                  {!esDomingo && (estaReservado || estaBloqueado) && modo === "peluquero" && (
-                    <button onClick={() => desbloquearTurno(hora, dia)}>
-                      Desbloquear
-                    </button>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+        {/* días semana */}
+        <div className="semana">
+          {["l", "m", "m", "j", "v", "s", "d"].map((d, i) => (
+            <div key={i}>{d}</div>
+          ))}
         </div>
-      ))}
+
+        {/* calendario */}
+        <div className="calendario">
+          {diasCalendario.map((dia, index) => {
+            const esSeleccionado =
+              dia &&
+              diaSeleccionado &&
+              dia.toDateString() === diaSeleccionado.toDateString();
+
+            return (
+              <div
+                key={index}
+                className="dia"
+                onClick={() => dia && setDiaSeleccionado(dia)}
+                style={{
+                  background: esSeleccionado ? "#00bcd4" : "transparent",
+                  cursor: dia ? "pointer" : "default",
+                  opacity: dia ? 1 : 0.3
+                }}
+              >
+                {dia ? dia.getDate() : ""}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ⏰ HORARIOS */}
+      <div>
+        <h3>{formatearFecha(diaSeleccionado)}</h3>
+
+        <div className="horarios">
+          {horarios.map((hora) => {
+
+            const idTurno = `${formatearFecha(diaSeleccionado)}-${hora}`;
+
+            const estaReservado = turnosReservados.some(
+              turno => turno.id === idTurno
+            );
+
+            const estaBloqueado = turnosBloqueados.includes(idTurno);
+
+            const esDomingo = diaSeleccionado.getDay() === 0;
+
+            const turnoEncontrado = turnosReservados.find(
+              turno => turno.id === idTurno
+            );
+
+            const deshabilitado = esDomingo || estaReservado || estaBloqueado;
+
+            return (
+              <div key={hora}>
+
+                <button
+                  disabled={deshabilitado}
+                  onClick={() => onClickTurno(hora, diaSeleccionado)}
+                >
+                  {hora} -{" "}
+                  {esDomingo
+                    ? "Cerrado"
+                    : estaBloqueado
+                    ? "Bloqueado"
+                    : estaReservado
+                    ? "Reservado"
+                    : modo === "cliente"
+                    ? "Reservar"
+                    : "Bloquear"}
+                </button>
+
+                {estaReservado && modo === "peluquero" && turnoEncontrado && (
+                  <div>
+                    <div>{turnoEncontrado.nombre}</div>
+                    <div>{turnoEncontrado.telefono}</div>
+                  </div>
+                )}
+
+                {!esDomingo && (estaReservado || estaBloqueado) && modo === "peluquero" && (
+                  <button onClick={() => desbloquearTurno(hora, diaSeleccionado)}>
+                    Desbloquear
+                  </button>
+                )}
+
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }
