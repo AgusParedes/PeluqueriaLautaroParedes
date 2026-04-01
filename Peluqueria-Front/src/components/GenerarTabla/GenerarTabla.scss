@@ -1,6 +1,27 @@
+.calendar__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  gap: 40px;
+  flex-wrap: wrap;
+  background-color: #1a1a1a;
+  color: white;
+  margin: 0 20px;
+  border-radius: 20px;
+  .calendar__time-button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px 60px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+}
 .semana {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, 40px);
   text-align: center;
   margin-bottom: 10px;
 }
@@ -21,6 +42,10 @@
 
 .horarios {
   display: grid;
-  grid-template-columns: repeat(2, 150px);
+  grid-template-columns: repeat(2, 170px);
   gap: 10px;
+  div{
+    display: flex;
+    justify-content: center;
+  }
 }

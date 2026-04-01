@@ -12,7 +12,6 @@ function GenerarTabla({
   const [fechaActual, setFechaActual] = useState(new Date());
   const [diaSeleccionado, setDiaSeleccionado] = useState(new Date());
 
-  // 📅 Generar horarios
   const GenerarHorarios = () => {
     const horarios = [];
     let hora = 9;
@@ -36,7 +35,6 @@ function GenerarTabla({
 
   const horarios = GenerarHorarios();
 
-  // 📅 Datos del mes
   const año = fechaActual.getFullYear();
   const mes = fechaActual.getMonth();
 
@@ -55,7 +53,6 @@ function GenerarTabla({
     diasCalendario.push(new Date(año, mes, i));
   }
 
-  // 📅 Helpers
   const formatearFecha = (dia) =>
     dia.toLocaleDateString("es-AR", {
       weekday: "long",
@@ -64,9 +61,8 @@ function GenerarTabla({
     });
 
   return (
-    <div style={{ display: "flex", gap: "40px" }}>
+    <div className="calendar__container">
 
-      {/* 🗓️ CALENDARIO */}
       <div>
 
         <h2>
@@ -76,14 +72,12 @@ function GenerarTabla({
           })}
         </h2>
 
-        {/* días semana */}
         <div className="semana">
           {["l", "m", "m", "j", "v", "s", "d"].map((d, i) => (
             <div key={i}>{d}</div>
           ))}
         </div>
 
-        {/* calendario */}
         <div className="calendario">
           {diasCalendario.map((dia, index) => {
             const esSeleccionado =
@@ -109,7 +103,6 @@ function GenerarTabla({
         </div>
       </div>
 
-      {/* ⏰ HORARIOS */}
       <div>
         <h3>{formatearFecha(diaSeleccionado)}</h3>
 
@@ -138,17 +131,18 @@ function GenerarTabla({
                 <button
                   disabled={deshabilitado}
                   onClick={() => onClickTurno(hora, diaSeleccionado)}
+                  className="calendar__time-button"
                 >
-                  {hora} -{" "}
+                  {hora}
                   {esDomingo
                     ? "Cerrado"
                     : estaBloqueado
                     ? "Bloqueado"
                     : estaReservado
                     ? "Reservado"
-                    : modo === "cliente"
-                    ? "Reservar"
-                    : "Bloquear"}
+                    : modo === "peluquero"
+                    ? "- Bloquear"
+                    : ""}
                 </button>
 
                 {estaReservado && modo === "peluquero" && turnoEncontrado && (
