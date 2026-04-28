@@ -78,31 +78,44 @@ function GenerarTabla({
           ))}
         </div>
 
-        <div className="calendario">
-          {diasCalendario.map((dia, index) => {
-            const esSeleccionado =
-              dia &&
-              diaSeleccionado &&
-              dia.toDateString() === diaSeleccionado.toDateString();
+      <div className="calendario">
+  {diasCalendario.map((dia, index) => {
+    
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
 
-            return (
-              <div
-                key={index}
-                className="dia"
-                onClick={() => dia && setDiaSeleccionado(dia)}
-                style={{
-                  background: esSeleccionado ? "#00bcd4" : "transparent",
-                  cursor: dia ? "pointer" : "default",
-                  opacity: dia ? 1 : 0.3
-                }}
-              >
-                {dia ? dia.getDate() : ""}
-              </div>
-            );
-          })}
-        </div>
+    const esSeleccionado =
+      dia &&
+      diaSeleccionado &&
+      dia.toDateString() === diaSeleccionado.toDateString();
+
+    const esDomingo = dia && dia.getDay() === 0;
+
+    const esPasado = dia && dia < hoy;
+
+    const deshabilitado = esDomingo || esPasado;
+
+    return (
+      <div
+        key={index}
+        className="dia"
+        onClick={() => dia && !deshabilitado && setDiaSeleccionado(dia)}
+        style={{
+          background: esSeleccionado ? "#00bcd4" : "transparent",
+          cursor: dia && !deshabilitado ? "pointer" : "not-allowed",
+          opacity: dia ? (deshabilitado ? 0.3 : 1) : 0.3
+        }}
+      >
+        {dia ? (
+          <>
+            {dia.getDate()}
+          </>
+        ) : ""}
       </div>
-
+    );
+  })}
+</div>
+</div>
       <div>
         <h3>{formatearFecha(diaSeleccionado)}</h3>
 
