@@ -1,6 +1,7 @@
 import GenerarTabla from "../GenerarTabla/GenerarTabla";
 import { useState } from "react";
 import  Formulario  from "../Formulario/Formulario";
+import "../../utils/flex.scss";
 
 function VistaCliente({
     turnosReservados,
@@ -19,7 +20,9 @@ function VistaCliente({
  {
     return (
         <div>
-            <h1>Bienvenido a la Peluquería</h1>
+            <div className="flex-center" style={{ margin: "20px 0" }}>
+                <img style={{ width: "230px", overflow: "hidden" }} src="/Foto_Logo.png" alt="Logo" />
+            </div>
             <div>
                 <GenerarTabla
                     modo="cliente"
@@ -35,7 +38,20 @@ function VistaCliente({
                     cancelar={() => setTurnoSeleccionado(null)}
                 />
             )}
+            <div className="calendar__info">
+                <p>
+                    ¿Necesitás cancelar o cambiar tu turno? <br />
+                    <a
+                    href="https://wa.me/549123456789"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >
+                    Contactanos por WhatsApp
+                    </a>
+                </p>
+            </div>
         </div>
+        
     )
 }
 }

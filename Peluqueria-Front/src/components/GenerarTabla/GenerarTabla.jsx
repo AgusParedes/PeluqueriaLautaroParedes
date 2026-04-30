@@ -117,7 +117,7 @@ function GenerarTabla({
 </div>
 </div>
       <div>
-        <h3>{formatearFecha(diaSeleccionado)}</h3>
+        <h3 style={{textAlign: "center"}}>{formatearFecha(diaSeleccionado)}</h3>
 
         <div className="horarios">
           {horarios.map((hora) => {
