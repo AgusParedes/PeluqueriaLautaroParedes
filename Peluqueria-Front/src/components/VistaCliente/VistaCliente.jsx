@@ -42,12 +42,13 @@ function VistaCliente({
                 <p>
                     ¿Necesitás cancelar o cambiar tu turno? <br />
                     <a
-                    href="https://wa.me/549123456789"
+                    href="https://wa.me/5493404408785"
                     target="_blank"
                     rel="noopener noreferrer"
                     >
-                    Contactanos por WhatsApp
+                    Contactanos por WhatsApp 
                     </a>
+                    <br />o comunicate al <a href="tel:+5493404408785">+5493404408785</a>
                 </p>
             </div>
         </div>

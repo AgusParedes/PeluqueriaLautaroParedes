@@ -4,6 +4,7 @@ import VistaCliente from "./components/VistaCliente/VistaCliente.jsx";
 import VistaPeluquero from "./components/VistaPeluquero/VistaPeluquero.jsx";
 import Home from "./components/Home/Home.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AvisoModal from "./components/AvisoModal/AvisoModal.jsx";
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
 
   const [turnosReservados, setTurnosReservados] = useState([]);
   const [turnosBloqueados, setTurnosBloqueados] = useState([]);
+  const [mostrarAviso, setMostrarAviso] = useState(true);
 
   const reservarTurno = async (dia, hora, nombre, telefono) => {
   
@@ -101,11 +103,20 @@ function App() {
 
               <Route path='/' element={<Home />} />
 
-              <Route path='/BookingPage' element={<VistaCliente
-                  turnosReservados={turnosReservados}
-                  turnosBloqueados={turnosBloqueados}
-                  reservarTurno={reservarTurno}
-                />} />
+              <Route path='/BookingPage' element={
+                  <>
+                    {mostrarAviso && (
+                      <AvisoModal onClose={() => setMostrarAviso(false)} />
+                    )}
+
+                    <VistaCliente
+                      turnosReservados={turnosReservados}
+                      turnosBloqueados={turnosBloqueados}
+                      reservarTurno={reservarTurno}
+                    />
+                  </>
+                } 
+              />
 
               <Route path='/SobreNosotros' element={<VistaPeluquero
                   turnosReservados={turnosReservados}

@@ -154,7 +154,7 @@ function GenerarTabla({
                     : estaReservado
                     ? "Reservado"
                     : modo === "peluquero"
-                    ? "- Bloquear"
+                    ? " Bloquear"
                     : ""}
                 </button>
 
