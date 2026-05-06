@@ -63,6 +63,7 @@ function GenerarTabla({
   return (
     <div className="calendar__container">
 
+      {/* CALENDARIO */}
       <div>
 
         <h2>
@@ -78,46 +79,41 @@ function GenerarTabla({
           ))}
         </div>
 
-      <div className="calendario">
-  {diasCalendario.map((dia, index) => {
-    
-    const hoy = new Date();
-    hoy.setHours(0, 0, 0, 0);
+        <div className="calendario">
+          {diasCalendario.map((dia, index) => {
 
-    const esSeleccionado =
-      dia &&
-      diaSeleccionado &&
-      dia.toDateString() === diaSeleccionado.toDateString();
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0);
 
-    const esDomingo = dia && dia.getDay() === 0;
+            const esSeleccionado =
+              dia &&
+              diaSeleccionado &&
+              dia.toDateString() === diaSeleccionado.toDateString();
 
-    const esPasado = dia && dia < hoy;
+            const esDomingo = dia && dia.getDay() === 0;
+            const esPasado = dia && dia < hoy;
 
-    const deshabilitado = esDomingo || esPasado;
+            const deshabilitado = esDomingo || esPasado;
 
-    return (
-      <div
-        key={index}
-        className="dia"
-        onClick={() => dia && !deshabilitado && setDiaSeleccionado(dia)}
-        style={{
-          background: esSeleccionado ? "#00bcd4" : "transparent",
-          cursor: dia && !deshabilitado ? "pointer" : "not-allowed",
-          opacity: dia ? (deshabilitado ? 0.3 : 1) : 0.3
-        }}
-      >
-        {dia ? (
-          <>
-            {dia.getDate()}
-          </>
-        ) : ""}
+            return (
+              <div
+                key={index}
+                className={`dia ${esSeleccionado ? "seleccionado" : ""} ${deshabilitado ? "deshabilitado" : ""}`}
+                onClick={() => dia && !deshabilitado && setDiaSeleccionado(dia)}
+              >
+                {dia ? dia.getDate() : ""}
+              </div>
+            );
+          })}
+        </div>
       </div>
-    );
-  })}
-</div>
-</div>
+
+      {/* HORARIOS */}
       <div>
-        <h3 style={{textAlign: "center"}}>{formatearFecha(diaSeleccionado)}</h3>
+
+        <h3 className="titulo-dia">
+          {formatearFecha(diaSeleccionado)}
+        </h3>
 
         <div className="horarios">
           {horarios.map((hora) => {
@@ -136,37 +132,45 @@ function GenerarTabla({
               turno => turno.id === idTurno
             );
 
-            const deshabilitado = esDomingo || estaReservado || estaBloqueado;
+            const deshabilitado =
+              esDomingo || estaReservado || estaBloqueado;
 
             return (
-              <div key={hora}>
+              <div key={hora} className="bloque-horario">
 
                 <button
                   disabled={deshabilitado}
                   onClick={() => onClickTurno(hora, diaSeleccionado)}
-                  className="calendar__time-button"
+                  className={`
+                    calendar__time-button
+                    ${estaReservado ? "reservado" : ""}
+                    ${estaBloqueado ? "bloqueado" : ""}
+                    ${esDomingo ? "cerrado" : ""}
+                  `}
                 >
-                  {hora}
-                  {esDomingo
-                    ? "Cerrado"
-                    : estaBloqueado
-                    ? "Bloqueado"
-                    : estaReservado
-                    ? "Reservado"
-                    : modo === "peluquero"
-                    ? " Bloquear"
-                    : ""}
+                  {
+                    esDomingo
+                      ? "Cerrado"
+                      : estaBloqueado
+                      ? "Bloqueado"
+                      : estaReservado
+                      ? "Reservado"
+                      : hora
+                  }
                 </button>
 
                 {estaReservado && modo === "peluquero" && turnoEncontrado && (
-                  <div>
+                  <div className="info-turno">
                     <div>{turnoEncontrado.nombre}</div>
                     <div>{turnoEncontrado.telefono}</div>
                   </div>
                 )}
 
                 {!esDomingo && (estaReservado || estaBloqueado) && modo === "peluquero" && (
-                  <button onClick={() => desbloquearTurno(hora, diaSeleccionado)}>
+                  <button
+                    className="btn-desbloquear"
+                    onClick={() => desbloquearTurno(hora, diaSeleccionado)}
+                  >
                     Desbloquear
                   </button>
                 )}

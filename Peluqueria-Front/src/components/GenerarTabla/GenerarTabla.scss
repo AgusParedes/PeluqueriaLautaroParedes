@@ -63,3 +63,21 @@
     
   }
 }
+.calendar__time-button.reservado {
+  background-color: #2c2c2c;
+  color: #aaa;
+  cursor: not-allowed;
+  font-size: 10px;
+}
+
+.calendar__time-button.bloqueado {
+  background-color: #444;
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.calendar__time-button.cerrado {
+  background-color: #1a1a1a;
+  color: #666;
+  cursor: not-allowed;
+}
